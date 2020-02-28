@@ -6,7 +6,7 @@ import os
 import gco
 import argparse
 import numpy as np
-import cPickle as pkl
+import pickle as pkl
 
 from glob import glob
 from scipy import signal
@@ -83,7 +83,7 @@ def main(unwrap_dir, segm_out_file, gmm_out_file):
     pairwise = np.ascontiguousarray(LABEL_COMP)
 
     seams = np.load('assets/basicModel_seams.npy')
-    edge_idx = pkl.load(open('assets/basicModel_edge_idx_1000.pkl', 'rb'))
+    edge_idx = pkl.load(open('assets/basicModel_edge_idx_1000.pkl', 'rb'), encoding='iso-8859-1')
 
     dr_v = signal.convolve2d(iso_mask, [[-1, 1]])[:, 1:]
     dr_h = signal.convolve2d(iso_mask, [[-1], [1]])[1:, :]
@@ -103,8 +103,8 @@ def main(unwrap_dir, segm_out_file, gmm_out_file):
     edges_to = np.r_[v_edges_to, h_edges_to, s_edges_to]
     edges_w = np.r_[np.ones_like(v_edges_from), np.ones_like(h_edges_from), np.ones_like(s_edges_from)]
 
-    gc = gco.gco()
-    gc.createGeneralGraph(1000 ** 2, pairwise.shape[0], True)
+    gc = gco.GCO() #GCO() not gco()
+    gc.create_general_graph(1000 ** 2, pairwise.shape[0], True) #create_general_graph not createGeneralGraph
     gc.set_data_cost(unaries.reshape(1000 ** 2, pairwise.shape[0]))
 
     gc.set_all_neighbors(edges_from, edges_to, edges_w)

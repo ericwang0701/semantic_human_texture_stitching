@@ -5,7 +5,8 @@ import cv2
 import os
 import argparse
 import numpy as np
-import cPickle as pkl
+#import cPickle as pkl
+import pickle as pkl
 
 from tqdm import tqdm
 from glob import glob
@@ -17,7 +18,7 @@ from tex.texture import TextureData
 
 
 def main(data_file, frame_dir, segm_dir, out):
-    data = pkl.load(open(data_file, 'rb'))
+    data = pkl.load(open(data_file, 'rb'),encoding='iso-8859-1')
 
     segm_files = np.array(sorted(glob(os.path.join(segm_dir, '*.png')) + glob(os.path.join(segm_dir, '*.jpg'))))
     frame_files = np.array(sorted(glob(os.path.join(frame_dir, '*.png')) + glob(os.path.join(frame_dir, '*.jpg'))))
